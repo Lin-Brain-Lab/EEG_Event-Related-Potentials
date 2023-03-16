@@ -27,23 +27,22 @@ DATA = [];
 for i = 1: length (files) % creates a loop to go through each file in the designated folder
     f = files{i}; % creates a temporary variable that holds the current filename
     if i > 1 && contains ([DATA.partinumb], f(1:((strfind (f, '_')) - 1))) % if the participant already had data in the structure
-            DataID = find (strcmp(f(1:((strfind (f, '_')) - 1)), {DATA.partinumb})); % creates a temporary variable for the to determine the dataset the file belongs to
-            condID = (size (DATA(DataID).filenames, 3) + 1);
-            DATA(DataID).filenames(1,1,condID) = {f}; % creats a subfield with the filename
-            condname = replace (f(13:(length(f))-4), ' ', '_');
-            DATA(DataID).condnames(1,1,condID) = {condname}; % creates a subfield with the condition
-            A = importdata (f, ' ', 1); % creates a temportary structure with the information from importdata
-            DATA(DataID).data(:,:,condID) = A.data; % selects out the amplitude data and places it in a the 'data' subfield
-            DATA(DataID).channames = A.colheaders; % selects out the channel names and places it in a the 'data' subfield
+        DataID = find (strcmp(f(1:((strfind (f, '_')) - 1)), {DATA.partinumb})); % creates a temporary variable for the to determine the dataset the file belongs to
+        condID = (size (DATA(DataID).filenames, 3) + 1);
+        DATA(DataID).filenames(1,1,condID) = {f}; % creats a subfield with the filename
+        condname = replace (f(13:(length(f))-4), ' ', '_');
+        DATA(DataID).condnames(1,1,condID) = {condname}; % creates a subfield with the condition
+        A = importdata (f, ' ', 1); % creates a temportary structure with the information from importdata
+        DATA(DataID).data(:,:,condID) = A.data; % selects out the amplitude data and places it in a the 'data' subfield
+        DATA(DataID).channames = A.colheaders; % selects out the channel names and places it in a the 'data' subfield
     else
-            DataID = length (DATA) + 1;
-            DATA(DataID).partinumb = f(1:((strfind (f, '_')) - 1)); %  creates a new structure with first subfield the participant number
-            DATA(DataID).filenames(1,1,1) = {f}; % creats a subfield with the filename
-            condname = replace (f(13:(length(f))-4), ' ', '_');
-            DATA(DataID).condnames(1,1,1) = {condname}; % creates a subfield with the condition
-            A = importdata (f, ' ', 1); % creates a temportary structure with the information from importdata
-            DATA(DataID).data(:,:,1) = A.data; % selects out the amplitude data and places it in a the 'data' subfield
-            DATA(DataID).channames = A.colheaders; % selects out the channel names and places it in a the 'data' subfield
-        end
-    end %ends the for loop
-    
+        DataID = length (DATA) + 1;
+        DATA(DataID).partinumb = f(1:((strfind (f, '_')) - 1)); %  creates a new structure with first subfield the participant number
+        DATA(DataID).filenames(1,1,1) = {f}; % creats a subfield with the filename
+        condname = replace (f(13:(length(f))-4), ' ', '_');
+        DATA(DataID).condnames(1,1,1) = {condname}; % creates a subfield with the condition
+        A = importdata (f, ' ', 1); % creates a temportary structure with the information from importdata
+        DATA(DataID).data(:,:,1) = A.data; % selects out the amplitude data and places it in a the 'data' subfield
+        DATA(DataID).channames = A.colheaders; % selects out the channel names and places it in a the 'data' subfield
+    end
+end %ends the for loop
