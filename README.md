@@ -6,7 +6,7 @@ Data preprocessed in both MATLAB's EEGLAB/ERPLAB and in BrainVision Analyzer
   - Script 'EEGLABDataReMark' was written by KJ to alter the event codes in EEGLAB before segmentation
 
 - Primary BrainVision preprocessing done by KJ (Uploaded to BrainVision branch)
-  - BV history template '
+  - BV history template 'HistTempExport.ehtp' is an export template that can be read by 'BVimport'
   - Script 'BVimport' was written by KJ to import and sort data preprocessed in BrainVision into a structure in MATLAB
   - Script 'BVDataCalc' was written by KJ to calculate the MMN minimum peak and its average for further analysis
   - Script 'BVDataMMNPlot' was written by KJ to create plots depicting the MMN minimun peak and its average
