@@ -10,4 +10,4 @@ Data preprocessed in both MATLAB's EEGLAB/ERPLAB and in BrainVision Analyzer
   - Script 'BVDataCalc' was written by KJ to calculate the MMN minimum peak and its average for further analysis
   - Script 'BVDataMMNPlot' was written by KJ to create plots depicting the MMN minimun peak and its average
   - Script 'BVDataPlot' was written by KJ to call create and save a 'BVDataMMNPlot' for each dataset in a 'BVDataCalc' derived structure
-  - Image '
+  - Image 'Fz_eMMN-sub015_mmn.png' is a sample of the output of script 'BVDataMMNPlot'
