@@ -7,3 +7,7 @@ Data preprocessed in both MATLAB's EEGLAB/ERPLAB and in BrainVision Analyzer
 
 - Primary BrainVision preprocessing done by KJ (Uploaded to BrainVision branch)
   - Script 'BVimport' was written by KJ to import and sort data preprocessed in BrainVision into a structure in MATLAB
+  - Script 'BVDataCalc' was written by KJ to calculate the MMN minimum peak and its average for further analysis
+  - Script 'BVDataMMNPlot' was written by KJ to create plots depicting the MMN minimun peak and its average
+  - Script 'BVDataPlot' was written by KJ to call create and save a 'BVDataMMNPlot' for each dataset in a 'BVDataCalc' derived structure
+  - Image '
