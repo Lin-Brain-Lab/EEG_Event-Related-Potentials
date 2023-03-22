@@ -1,5 +1,13 @@
 function BVStats (DATACALC, ChanNames, filedir)
 
+% inputs 
+%   DATACALC - a structure created with BVDataCalc with all desired datasets
+%   ChanName - a string indicating the desired channel to be plotted
+%   filedir - a string indicating the folder in which the figures should be saved
+% outputs
+%   figures for all channels named in ChanNames
+%   saved .png files for all figures
+
 close all % cleases any open figures
 
 for Chan = 1 : length (ChanNames) % iterative loop for all channels designated
@@ -35,7 +43,6 @@ for Chan = 1 : length (ChanNames) % iterative loop for all channels designated
     xlim ([0 3]); % extends the x limits in both directions
     ax = gca; %sets the structure of properties of the graph into 'ax'
     ax.YDir = 'reverse'; % reverses the direction of the y-axis
-    
     
     % save to folder
     file = (strcat (filedir, '\', ChanNames{Chan}, '_paired t-test', '.png')); % defines the filename of the resultant figure
