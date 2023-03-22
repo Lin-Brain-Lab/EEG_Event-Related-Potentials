@@ -12,3 +12,5 @@ Data preprocessed in both MATLAB's EEGLAB/ERPLAB and in BrainVision Analyzer
   - Script 'BVDataMMNPlot' was written by KJ to create plots depicting the MMN minimun peak and its average
   - Script 'BVDataPlot' was written by KJ to call create and save a 'BVDataMMNPlot' for each dataset in a 'BVDataCalc' derived structure
   - Image 'Fz_eMMN-sub015_mmn.png' is a sample of the output of script 'BVDataMMNPlot'
+  - Script 'BVStats' was written by KJ to create plots depicting the paired samples used for the MMN t-test. Includes resultant p-value
+  - Image 'Fz_paired t-test' is a sample of the output of script 'BVStats'
