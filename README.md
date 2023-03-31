@@ -40,18 +40,81 @@ Mismatch negativity (MMN) is associated with auditory events when repetitive sou
   10. Plot ERPs using "ERPLAB/Plot ERP/Plot ERP waveforms"
   
    
+- Initial Brain Products analysis:
+  <details>
+  <summary> A full step-by-step break down of the initial analysis pipeline done in Brain Products. This pipeline is currently being updated </summary>
+    
+  1. History template for [re-referencing](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/scripts/HistTempPre_rbs.ehtp)
+      - Uses Transformations -> Data Preprocessing -> New Reference
+      - Re-references all channels to TP9 keeping the not re-referenced TP9 in the dataset
+    
+  2. Marker for Bad Intervals
+      - Uses Transformations -> Data Preprocessing ->  Edit Markers (graphical)
+      - Manually marks all noisy and inter-block intervals as bad intervals
+   
+  3. History template for [further processing](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/scripts/HistTempPost_rbsAll.ehtp)
+      - Applies IIR Filters
+        - Uses Transformations -> Artifact Rejection/Reduction -> Data Filtering -> IIR Filters
+        - Applies 1hz low cutoff filter, 40hz high cutoff filter, and 60hz notch filter
+      
+      - Ocular Correction
+        - Uses Transformations -> Frequency and Component Analysis -> ICA
+        - Applies Infomax Extended ICA algorithm to whole dataset (excluding channels TP9, TP10, FT10) 
+        - user must manually identify candidate components for VEOG and HEOG from component read-out, verify candidates using topography and subtraction comparison
+    
+      - Block Segmentation
+        - Uses Transformations -> Segment Analysis Functions -> Segmentation
+        - Segments blocks from Oms-556500ms based on identifying block codes (ie S27, S28...)
+        - To select only initial block designation codes, an advanced Boolean expression is used:
+        ```
+        FIRST (Stimulus, S 11, *, *)  OR FIRST (Stimulus, S 2, *, *) OR FIRST (Stimulus, S 12, *, *) OR FIRST (Stimulus, S 13, *, *)
+        ```
+        - Some blocks need fine-tuning based on timing or coding irregularities
+    
+      - Renaming Markers
+        - Uses Transformations -> Data Preprocessing ->  Edit Markers (automatic)
+        - renames all stimuli markers to either standard or deviant
+        ```
+        Old Type       	Old Description          	New Type       	New Description          	Channel  	Time Shift  	Action on Markers
+        Stimulus   	S  2                     	Stimulus   	Deviant                  	no change	         0	modified          
+        Stimulus   	S 11                     	Stimulus   	Standard                 	no change	         0	modified          
+        Stimulus   	S 12                     	Stimulus   	Standard                 	no change	         0	modified          
+        Stimulus   	S 13                     	Stimulus   	Standard                 	no change	         0	modified      
+        ```
+    
+      - Trial Segmentation
+        - Uses Transformations -> Segment Analysis Functions -> Segmentation
+        - Segments trials from -200ms-1000ms, skipping any marked bad intervals
+        - Deviant trials are defined based on the deviant stimulus codes for which the following advanced Boolean expression held true
+        ```
+        LAST (Stimulus, Standard, -2000, 0)
+        ```
+        - Standard trials are defined based on the standard stimulus codes for which the following advanced Boolean expression held true
+        ```
+        FIRST (Stimulus, Deviant, 0, 2000)
+        ```
+    
+      - Baseline correction
+        - Uses Transformations -> Segment Analysis Functions -> Baseline Correction
+        - all segments are corrected based on the pre-stimulus interval (-200ms-0ms)
+    
+      - Average ERP calculation
+        - Uses Transformations -> Segment Analysis Functions -> Average
+        - Averages all segments in each trial are calculated along with their standard deviations
+    
+  4. MMN Calculation
+      - Use Transformations -> Connectivity and Statistics -> Data Comparison (Difference)
+      - Manually calculate the MMN based on the Deviant - Standard Average ERPs for each block
+    
+  5. Grand Average calculation
+      - Use Transformations -> Segment Analysis Functions -> Result Evaluation -> Grand Average
+      - Calculate the Grand Average of all ERP and MMN for all blocks using all datasets
+    
+  6. History template to [export to MATLAB](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/scripts/HistTempExport.ehtp)
+      - uses Export -> Generic Data
+      - Data from all averaged trials and MMNs are exported as .txt files for further data analysis, depictions, and statistics done in MATLAB
+    
+  7. Data results
+      - Data resulting from this pipeline are depicted in a PowerPoint presentation available [here](https://docs.google.com/presentation/d/1MA_F7ikH4wJpQ0svzPNiP0EWaXcTarxt/edit?usp=share_link&ouid=107691860668063732151&rtpof=true&sd=true)
 
-- Primary MATLAB preprocessing done by Moh (Uploaded to MATLAB branch) 
-  - Script 'EEGLABDataReMark' was written by KJ to alter the event codes in EEGLAB before segmentation
-
-
-
-- Primary BrainVision preprocessing done by KJ (Uploaded to BrainVision branch)
-  - BV history template 'HistTempExport.ehtp' is an export template that can be read by 'BVimport'
-  - Script 'BVimport' was written by KJ to import and sort data preprocessed in BrainVision into a structure in MATLAB
-  - Script 'BVDataCalc' was written by KJ to calculate the MMN minimum peak and its average for further analysis
-  - Script 'BVDataMMNPlot' was written by KJ to create plots depicting the MMN minimun peak and its average
-  - Script 'BVDataPlot' was written by KJ to call create and save a 'BVDataMMNPlot' for each dataset in a 'BVDataCalc' derived structure
-  - Image 'Fz_eMMN-sub015_mmn.png' is a sample of the output of script 'BVDataMMNPlot'
-  - Script 'BVStats' was written by KJ to create plots depicting the paired samples used for the MMN t-test. Includes resultant p-value
-  - Image 'Fz_paired t-test' is a sample of the output of script 'BVStats'
+  </details>
