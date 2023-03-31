@@ -40,7 +40,7 @@ Mismatch negativity (MMN) is associated with auditory events when repetitive sou
   10. Plot ERPs using "ERPLAB/Plot ERP/Plot ERP waveforms"
   
    
-- Initial Brain Products analysis:
+- Initial Brain Products Analysis
   <details>
   <summary> A full step-by-step break down of the initial analysis pipeline done in Brain Products. This pipeline is currently being updated </summary>
     
