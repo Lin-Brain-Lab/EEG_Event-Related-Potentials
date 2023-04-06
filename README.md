@@ -39,4 +39,52 @@ Mismatch negativity (MMN) is associated with auditory events when repetitive sou
   
   10. Plot ERPs using "ERPLAB/Plot ERP/Plot ERP waveforms"
   
+- BrainVision Analyzer
+  <details>
+  <summary> A full step-by-step break down the BV pipeline as altered to reflect HJ's critiques
   
+  </summary>
+
+  1. Using History Template -> Apply to History File(s), apply history template [HistTemp_HJEdit](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/scripts/HistTemp_HJEdit.ehtp) to all datasets
+      - Applies band pass filter between 1 and 70 hz for all channels
+      - Re-references all channels to the bilateral mastoids (TP9 and TP10)
+      - Initiates semi-automatic ICA analysis
+        - history template will pause for user input -> ensure verticle occularmotor componant is encompassed by compant F00
+        - manually save screencap of 2D topography of independant componants
+        - press 'finish' to continue history template application
+      - Segments Blocks
+        - segments blocks around markers 27-32 according to the boolean expression:
+        ```
+        FIRST (Stimulus, S 11, *, *)  OR FIRST (Stimulus, S 2, *, *) OR FIRST (Stimulus, S 12, *, *) OR FIRST (Stimulus, S 13, *, *)
+        ```
+        - some blocks may need fine-tuning based on timing or coding irregularities
+      - Renames markers within each block as follows:
+        ```
+        Old Type       	Old Description          	New Type       	New Description          	Channel  	Time Shift  	Action on Markers
+        Stimulus   	    S  2                     	Stimulus   	    Deviant                  	no change	         0	  modified
+        Stimulus   	    S 11                     	Stimulus   	    Standard                 	no change	         0	  modified    
+        Stimulus   	    S 12                     	Stimulus   	    Standard                 	no change	         0	  modified 
+        Stimulus   	    S 13                     	Stimulus   	    Standard                 	no change	         0	  modified 
+        ```
+      - Segments Trials
+        - segments standard trials -200ms-800ms around any marker with description 'Standard' where the following boolean expression holds true
+        ```
+        FIRST (Stimulus, Deviant, 0, 2000)
+        ```
+        - segments deviant trials -200ms-800ms around any marker with description 'Deviant' where the following boolean expression holds true
+        ```
+        LAST (Stimulus, Standard, -2000, 0)
+        ```
+      - Applies a baseline correction based on the pre-stimulus time window for all segments
+      - Performs an automatic artifact rejection with a 100µV threshold
+      - Calculates averaged evoked response and standard deviation from trials
+      - Calculates difference between deviant and standard evoked responses for each block
+    
+  2. If the 2D topography of independant componants incidates that verticle occularmotor componant is devided across multiple componants, apply history template [HistTemp_HJEdit_altICA](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/scripts/HistTemp_HJEdit_altICA.ehtp)
+      - Applies a 30hz high cutoff filter to channels Fp1 and Fp2
+      - Initiates semi-automatic ICA analysis restircting the number of componants calculated to 20
+      - completes remaining history template steps as outline above
+      
+  3. 
+      
+  </details>
