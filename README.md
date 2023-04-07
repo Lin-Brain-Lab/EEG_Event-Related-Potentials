@@ -57,10 +57,7 @@ Mismatch negativity (MMN) is associated with auditory events when repetitive sou
          
            </summary>
          
-           - If [only F01 shows significant frontal activity](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/images/eMMN-sub005_2d_ic.png) use [BV_TMMN_alt_30hcf] to apply a 30hz high cutoff filter to channels Fp1 and Fp2
-           - If significant frontal activity is [spread across multiple component topographies](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/images/eMMN-sub016_2d_ic.png), or the component readout shows significant oculomotor acitivy for F01, use [BV_TMMN_alt_ICA20] to initiate a semi-automatic ICA analysis restircting the number of components calculated to 20
-               - Note: this can also be done by pressing the ['recalculate' button](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/images/Recalculate.png) on the ICA options menu and changing [the components calculated to 20](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/images/Recalculate%202.png)
-           - Once you are able to [isolate the oculomotor component] and remove it, apply the remaining analysis steps outlined below with [BV_TMMN_alt_seg]
+           
          
          
            </details>
