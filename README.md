@@ -49,7 +49,22 @@ Mismatch negativity (MMN) is associated with auditory events when repetitive sou
       - Applies band pass filter between 1 and 70 hz for all channels
       - Re-references all channels to the bilateral mastoids (TP9 and TP10)
       - Initiates semi-automatic ICA analysis
-        - history template will pause for user input -> ensure verticle occularmotor componant is encompassed by compant F00
+        - history template will pause for user input -> look at [topographical representation](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/images/eMMN-sub008_2d_ic.png) to ensure verticle oculomotor component is concentrated on component F00
+         
+           <details>
+         
+           <summary> Troubleshooting suggestions for if oculomotor component is not concentrated on component F00
+         
+           </summary>
+         
+           - If [only F01 shows significant frontal activity](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/images/eMMN-sub005_2d_ic.png) use [BV_TMMN_alt_30hcf] to apply a 30hz high cutoff filter to channels Fp1 and Fp2
+           - If significant frontal activity is [spread across multiple component topographies](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/images/eMMN-sub016_2d_ic.png), or the component readout shows significant oculomotor acitivy for F01, use [BV_TMMN_alt_ICA20] to initiate a semi-automatic ICA analysis restircting the number of components calculated to 20
+               - Note: this can also be done by pressing the ['recalculate' button](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/images/Recalculate.png) on the ICA options menu and changing [the components calculated to 20](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/images/Recalculate%202.png)
+           - Once you are able to [isolate the oculomotor component] and remove it, apply the remaining analysis steps outlined below with [BV_TMMN_alt_seg]
+         
+         
+           </details>
+
         - manually save screencap of 2D topography of independant componants
         - press 'finish' to continue history template application
       - Segments Blocks
@@ -57,7 +72,23 @@ Mismatch negativity (MMN) is associated with auditory events when repetitive sou
         ```
         FIRST (Stimulus, S 11, *, *)  OR FIRST (Stimulus, S 2, *, *) OR FIRST (Stimulus, S 12, *, *) OR FIRST (Stimulus, S 13, *, *)
         ```
-        - some blocks may need fine-tuning based on timing or coding irregularities
+        - Note: some blocks may need fine-tuning based on timing or coding irregularities. This will be indicated with an message saying 'No segments were found' the next time the history template pauses for user input.
+        
+           <details>
+           <summary> Troubleshooting suggestions for "No segments were found." error messages
+         
+           </summary>
+           
+           - If there is a missing block indicator code at the beginning of the effected block (ie. S27), go to Transformations -> Segment Analysis Functions -> Segmentation, ensure the appropriate block is designated, change the advanced boolean code to:
+             ```
+             LAST (Stimulus, S 11, *, *)  OR LAST (Stimulus, S 2, *, *) OR LAST (Stimulus, S 12, *, *) OR LAST (Stimulus, S 13, *, *)
+             ```
+             and change the segmentation interval to -556500 - 0ms
+           - If there is no missing block indicator code, or the 'no segments were found' message presists after the above change has been made, the problem is likely caused by an appended data boundary within the segmentation interval. Check the beginning and end of the block for a boundary indicator and shorten the segmentation interval so as not to include the boundary. Alternatively, shorten the segmentation interval by 500-1000ms until segmentation is possible.
+         
+         
+           </details>
+        
       - Renames markers within each block as follows:
         ```
         Old Type       	Old Description          	New Type       	New Description          	Channel  	Time Shift  	Action on Markers
@@ -80,10 +111,7 @@ Mismatch negativity (MMN) is associated with auditory events when repetitive sou
       - Calculates averaged evoked response and standard deviation from trials
       - Calculates difference between deviant and standard evoked responses for each block
     
-  2. If the 2D topography of independant componants incidates that verticle occularmotor componant is devided across multiple componants, apply history template [HistTemp_HJEdit_altICA](https://github.com/Lin-Brain-Lab/EEG_Event-Related-Potentials/blob/main/scripts/HistTemp_HJEdit_altICA.ehtp)
-      - Applies a 30hz high cutoff filter to channels Fp1 and Fp2
-      - Initiates semi-automatic ICA analysis restircting the number of componants calculated to 20
-      - completes remaining history template steps as outline above
+  2. 
       
   3. 
       
